@@ -1,0 +1,2 @@
+1. Sprawdź ile razy został zakupiony produkt Mysz Logitech MX Master 3.
+ - ustal czy produkt zakupiono w roku 2024
