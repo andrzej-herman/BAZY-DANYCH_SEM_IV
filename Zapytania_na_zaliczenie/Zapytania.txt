@@ -1,2 +1,67 @@
-1. Sprawdź ile razy został zakupiony produkt Mysz Logitech MX Master 3.
- - ustal czy produkt zakupiono w roku 2024
+
+1. Dodaj do bazy nowe zamówienie złożone teraz przez dowolnego użytkownika, na którym są trzy dowolne produkty w cenach promocyjnych. Napisz pełny skrypt takiej operacji.
+
+insert into Orders values (5, 2, 3, 245, GETDATE(), 245)
+insert into Orders_Products values 
+((select top 1 Id from Orders order by Id desc), 139, 2199)
+insert into Orders_Products values 
+((select top 1 Id from Orders order by Id desc), 144, 399)
+
+
+2. Wygeneruj raport sprzedaży wszystkich sprzedanych produktów:
+IMIE_NAZWISKO, NUMER_ZAPOWIENIA, NAZWA_PRODUKTU, DATA_SPRZEDAŻY, CENA_SPRZEDAZY
+
+select 
+u.FirstName + ' ' + u.LastName as Imie_Nazwisko,
+p.Title,
+o.DateAndTime as Data_Zamowienia,
+op.ProductPrice as Cena_Sprzedazy
+from Orders o
+join Users u on o.UserId = u.Id
+join Orders_Products op on o.Id = op.OrderId
+join Products p on op.ProductId = p.Id
+
+3. Łączna wartość sprzedaży w 2024 roku
+
+select 
+sum (ProductPrice)
+from Orders o
+join Users u on o.UserId = u.Id
+join Orders_Products op on o.Id = op.OrderId
+join Products p on op.ProductId = p.Id
+where DateAndTime between '2024-01-01' and '2025-01-01' 
+
+select
+u.FirstName + ' ' + u.LastName as IMIE_NAZWISKO,
+o.Id as NUMER_ZAMOWIENIA,
+p.Title as NAZWA_PRODUKTU,
+o.DateAndTime as DATA_SPRZEDAZY,
+op.ProductPrice as CENA_SPRZEDAZY,
+a.City as MIASTO
+from Orders o 
+join Users u on o.UserId = u.Id
+join Orders_Products op on o.Id = op.OrderId
+join Products p on op.ProductId = p.Id
+join Addresses a on u.Id = a.UserId
+join Sexes s on u.SexId = s.Id
+WHERE City = 'Łódź' and s.Id = 2
+ORDER BY DateAndTime
+
+
+4. Wylicz jaki procent wartościowo całej sprzedaży stanowią
+produkty firmy Samsung
+
+
+select 
+(
+(select 
+SUM(ProductPrice) from Orders_Products op
+join Products p on op.ProductId = p.Id
+join Brands b on p.BrandId = b.Id
+WHERE b.Id = 60) / (select SUM(ProductPrice) from Orders_Products) * 100)
+
+
+
+
+5 Sprawdź ile razy został zakupiony produkt Mysz Logitech MX Master 3.
+ - ustal czy ten produkt zakupiono w roku 2024
