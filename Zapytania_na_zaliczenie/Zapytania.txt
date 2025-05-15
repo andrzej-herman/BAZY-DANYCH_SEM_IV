@@ -1,3 +1,24 @@
+DIAGRAM BAZY DANYCH
+INSERTY ZŁOŻONE
+
+FUNKCJE:
+
+- GETDATE(),
+- SUM(nazwa_kolumny),
+- COUNT(*)
+
+ĆWICZENIE ZŁOŻONYCH ZAPTAŃ
+
+
+
+
+
+
+
+
+
+
+
 
 1. Dodaj do bazy nowe zamówienie złożone teraz przez dowolnego użytkownika, na którym są trzy dowolne produkty w cenach promocyjnych. Napisz pełny skrypt takiej operacji.
 
@@ -65,3 +86,50 @@ WHERE b.Id = 60) / (select SUM(ProductPrice) from Orders_Products) * 100)
 
 5 Sprawdź ile razy został zakupiony produkt Mysz Logitech MX Master 3.
  - ustal czy ten produkt zakupiono w roku 2024
+
+
+
+
+ - jaki procent wartości sprzedaży zrealizowały kobiety
+
+ select
+u.FirstName + ' ' + u.LastName as IMIE_NAZWISKO,
+o.Id as NUMER_ZAMOWIENIA,
+p.Title as NAZWA_PRODUKTU,
+o.DateAndTime as DATA_SPRZEDAZY,
+op.ProductPrice as CENA_SPRZEDAZY
+from Orders o 
+join Users u on o.UserId = u.Id
+join Orders_Products op on o.Id = op.OrderId
+join Products p on op.ProductId = p.Id
+
+select
+SUM(op.ProductPrice)
+from Orders o 
+join Users u on o.UserId = u.Id
+join Orders_Products op on o.Id = op.OrderId
+join Products p on op.ProductId = p.Id
+where o.StatusId = 4 and o.DateAndTime between '2024-01-01' and '2025-01-01'
+and u.SexId = 2 
+
+select
+SUM(op.ProductPrice)
+from Orders o 
+join Users u on o.UserId = u.Id
+join Orders_Products op on o.Id = op.OrderId
+join Products p on op.ProductId = p.Id
+where o.StatusId = 4 and o.DateAndTime between '2024-01-01' and '2025-01-01'
+
+select (40957.63 / 57939.90 ) * 100
+
+
+-- średnia ocena produktów z kategorii fotografia
+
+select Count(*) from Notes n
+join Products p on n.ProductId = p.Id
+where p.CategoryId = 7
+
+select Sum(NoteValue) from Notes n
+join Products p on n.ProductId = p.Id
+where p.CategoryId = 7
+select 9/4
